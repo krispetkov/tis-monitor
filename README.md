@@ -36,11 +36,7 @@ its own owning user. `launchctl kickstart` is the one lever a regular account ha
 - Xcode Command Line Tools (`xcode-select --install`) — needed for cgo, used here to
   call `CGEventSourceKeyState` for the left-Ctrl check.
 
-## Build
-
-```bash
-go build -o tis-monitor .
-```
+## Install
 
 Or download the latest prebuilt binary from the [Releases](../../releases) page (Apple Silicon only).
 
@@ -53,6 +49,12 @@ xattr -d com.apple.quarantine tis-monitor
 
 or right-click (Control-click) the binary in Finder → Open → Open, and confirm the
 prompt.
+
+## Build
+
+```bash
+go build -o tis-monitor .
+```
 
 ## Usage
 
