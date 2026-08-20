@@ -30,18 +30,18 @@ func TestCtrlEdgeDetectorStartsUnpressed(t *testing.T) {
 
 func TestRenderLaunchAgentPlistContainsExpectedFields(t *testing.T) {
 	plist := renderLaunchAgentPlist(launchAgentConfig{
-		Label:      "local.tismonitor",
-		BinaryPath: "/tmp/tismonitor",
-		StdoutPath: "/tmp/tismonitor.log",
-		StderrPath: "/tmp/tismonitor.err",
+		Label:      "local.tis-monitor",
+		BinaryPath: "/tmp/tis-monitor",
+		StdoutPath: "/tmp/tis-monitor.log",
+		StderrPath: "/tmp/tis-monitor.err",
 	})
 
 	for _, want := range []string{
-		"<string>local.tismonitor</string>",
-		"<string>/tmp/tismonitor</string>",
+		"<string>local.tis-monitor</string>",
+		"<string>/tmp/tis-monitor</string>",
 		"<string>run</string>",
-		"<string>/tmp/tismonitor.log</string>",
-		"<string>/tmp/tismonitor.err</string>",
+		"<string>/tmp/tis-monitor.log</string>",
+		"<string>/tmp/tis-monitor.err</string>",
 		"<key>RunAtLoad</key>",
 		"<key>KeepAlive</key>",
 	} {
@@ -53,10 +53,10 @@ func TestRenderLaunchAgentPlistContainsExpectedFields(t *testing.T) {
 
 func TestRenderLaunchAgentPlistIsValidPlist(t *testing.T) {
 	plist := renderLaunchAgentPlist(launchAgentConfig{
-		Label:      "local.tismonitor",
-		BinaryPath: "/tmp/tismonitor",
-		StdoutPath: "/tmp/tismonitor.log",
-		StderrPath: "/tmp/tismonitor.err",
+		Label:      "local.tis-monitor",
+		BinaryPath: "/tmp/tis-monitor",
+		StdoutPath: "/tmp/tis-monitor.log",
+		StderrPath: "/tmp/tis-monitor.err",
 	})
 
 	cmd := exec.Command("plutil", "-lint", "-")

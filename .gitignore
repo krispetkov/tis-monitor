@@ -28,7 +28,7 @@ go.work.sum
 .env
 
 # compiled binary
-/tismonitor
+/tis-monitor
 
 # Editor/IDE
 # .idea/

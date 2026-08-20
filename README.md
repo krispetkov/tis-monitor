@@ -12,13 +12,13 @@ Ctrl+Space silently stops working until something revives it.
 
 ## Solution
 
-`tismonitor` is a tiny background daemon that notices and revives it — checked every
+`tis-monitor` is a tiny background daemon that notices and revives it — checked every
 10 seconds, and instantly when you press left Ctrl (so it's usually back before you
 finish pressing Space).
 
 `TextInputSwitcher` process is itself a real on-demand LaunchAgent
 (Mach-activated (see below), no `RunAtLoad`/`KeepAlive` of its own) — by design it exits when idle
-under pressure and expects to be woken back up on demand. So `tismonitor` doesn't
+under pressure and expects to be woken back up on demand. So `tis-monitor` doesn't
 relaunch the raw binary itself; it asks `launchd` to restart its own job be executing:
 
 ```bash
@@ -39,7 +39,7 @@ its own owning user. `launchctl kickstart` is the one lever a regular account ha
 ## Build
 
 ```bash
-go build -o tismonitor .
+go build -o tis-monitor .
 ```
 
 Or download the latest prebuilt binary from the [Releases](../../releases) page (Apple Silicon only).
@@ -48,7 +48,7 @@ Since the binary isn't signed/notarized, macOS Gatekeeper will block it on first
 ("cannot be opened because it is from an unidentified developer"). To allow it:
 
 ```bash
-xattr -d com.apple.quarantine tismonitor
+xattr -d com.apple.quarantine tis-monitor
 ```
 
 or right-click (Control-click) the binary in Finder → Open → Open, and confirm the
@@ -57,10 +57,10 @@ prompt.
 ## Usage
 
 ```bash
-./tismonitor status      # is TextInputSwitcher running? is tismonitor installed?
-./tismonitor run         # run in the foreground (this is what autostart uses)
-./tismonitor install     # install + start the autostart LaunchAgent
-./tismonitor uninstall   # remove it
+./tis-monitor status      # is TextInputSwitcher running? is tis-monitor installed?
+./tis-monitor run         # run in the foreground (this is what autostart uses)
+./tis-monitor install     # install + start the autostart LaunchAgent
+./tis-monitor uninstall   # remove it
 ```
 
 ## Where things live
@@ -69,10 +69,10 @@ Running `install` copies the binary and sets up autostart:
 
 | What | Path |
 | --- | --- |
-| Installed binary | `~/Library/Application Support/TISMonitor/tismonitor` |
-| LaunchAgent | `~/Library/LaunchAgents/local.tismonitor.plist` |
-| Logs (stdout) | `~/Library/Logs/tismonitor.log` |
-| Logs (stderr/crashes) | `~/Library/Logs/tismonitor.err` |
+| Installed binary | `~/Library/Application Support/tis-monitor/tis-monitor` |
+| LaunchAgent | `~/Library/LaunchAgents/local.tis-monitor.plist` |
+| Logs (stdout) | `~/Library/Logs/tis-monitor.log` |
+| Logs (stderr/crashes) | `~/Library/Logs/tis-monitor.err` |
 
 The LaunchAgent is set to start at login and restart it if it ever exits
 (`RunAtLoad`/`KeepAlive`), and runs as a background-priority process.
@@ -80,29 +80,29 @@ The LaunchAgent is set to start at login and restart it if it ever exits
 ## Stopping / uninstalling
 
 ```bash
-./tismonitor uninstall
+./tis-monitor uninstall
 ```
 
 This unloads the LaunchAgent, deletes the plist, and removes the installed binary and
-its folder. Log files under `~/Library/Logs/tismonitor.*` are left in place — delete
-them by hand if you want them gone too. After this, nothing of `tismonitor` remains
+its folder. Log files under `~/Library/Logs/tis-monitor.*` are left in place — delete
+them by hand if you want them gone too. After this, nothing of `tis-monitor` remains
 running or configured to start.
 
 If you just want to stop it temporarily without a full uninstall:
 
 ```bash
-launchctl bootout gui/$(id -u)/local.tismonitor
+launchctl bootout gui/$(id -u)/local.tis-monitor
 ```
 
-and start it again later with `./tismonitor install` (or `launchctl bootstrap` +
+and start it again later with `./tis-monitor install` (or `launchctl bootstrap` +
 `launchctl kickstart -k` against the existing plist, if it's still there).
 
 ## Troubleshooting
 
-- Check `~/Library/Logs/tismonitor.log` for what it's been doing.
+- Check `~/Library/Logs/tis-monitor.log` for what it's been doing.
 - Manually test the revival command it uses:
   `launchctl kickstart -k gui/$(id -u)/com.apple.TextInputSwitcher`
-- `./tismonitor status` shows both TextInputSwitcher's current state and whether the
+- `./tis-monitor status` shows both TextInputSwitcher's current state and whether the
   agent is installed/running.
 
 ## What is Mach
