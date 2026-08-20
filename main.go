@@ -27,7 +27,7 @@ import (
 const (
 	tisProcessName   = "TextInputSwitcher"
 	tisAgentLabel    = "com.apple.TextInputSwitcher"
-	agentLabel       = "local.tismonitor"
+	agentLabel       = "local.tis-monitor"
 	pollInterval     = 50 * time.Millisecond
 	periodicInterval = 10 * time.Second
 )
@@ -56,8 +56,8 @@ func main() {
 // runDaemon is the long-running loop behind the "run" subcommand: it revives
 // TextInputSwitcher once up front, then polls on every tick until killed.
 func runDaemon() {
-	log.SetOutput(os.Stdout) // routine logs -> tismonitor.log; tismonitor.err stays for real crashes
-	log.Printf("tismonitor starting (pid %d)", os.Getpid())
+	log.SetOutput(os.Stdout) // routine logs -> tis-monitor.log; tis-monitor.err stays for real crashes
+	log.Printf("tis-monitor starting (pid %d)", os.Getpid())
 	ensureRunning()
 
 	var detector ctrlEdgeDetector
@@ -141,7 +141,7 @@ func tick(detector *ctrlEdgeDetector, lastPeriodic *time.Time) {
 }
 
 // status prints whether TextInputSwitcher is running and whether the
-// tismonitor LaunchAgent itself is installed and running.
+// tis-monitor LaunchAgent itself is installed and running.
 func status() {
 	if isTisRunning() {
 		fmt.Println("TextInputSwitcher: running")
@@ -151,12 +151,12 @@ func status() {
 
 	out, err := exec.Command("launchctl", "print", fmt.Sprintf("gui/%d/%s", os.Getuid(), agentLabel)).CombinedOutput()
 	if err != nil {
-		fmt.Println("tismonitor agent: not installed")
+		fmt.Println("tis-monitor agent: not installed")
 		return
 	}
 	if strings.Contains(string(out), "state = running") {
-		fmt.Println("tismonitor agent: installed and running")
+		fmt.Println("tis-monitor agent: installed and running")
 	} else {
-		fmt.Println("tismonitor agent: installed but not running")
+		fmt.Println("tis-monitor agent: installed but not running")
 	}
 }

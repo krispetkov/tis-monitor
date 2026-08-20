@@ -22,13 +22,13 @@ jobs:
         run: go test ./...
 
       - name: Build
-        run: go build -o tismonitor .
+        run: go build -o tis-monitor .
 
       - name: Package
-        run: zip tismonitor-${{ github.ref_name }}-arm64.zip tismonitor README.md LICENSE
+        run: zip tis-monitor-${{ github.ref_name }}-arm64.zip tis-monitor README.md LICENSE
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: tismonitor-${{ github.ref_name }}-arm64.zip
+          files: tis-monitor-${{ github.ref_name }}-arm64.zip
           generate_release_notes: true

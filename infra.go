@@ -11,18 +11,18 @@ import (
 	"strings"
 )
 
-// getInstallDir returns the per-user directory tismonitor installs its binary into.
+// getInstallDir returns the per-user directory tis-monitor installs its binary into.
 func getInstallDir() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatalf("cannot determine home directory: %v", err)
 	}
-	return filepath.Join(home, "Library", "Application Support", "TISMonitor")
+	return filepath.Join(home, "Library", "Application Support", "tis-monitor")
 }
 
 // getInstalledBinaryPath returns where the binary lives once "install" has run.
 func getInstalledBinaryPath() string {
-	return filepath.Join(getInstallDir(), "tismonitor")
+	return filepath.Join(getInstallDir(), "tis-monitor")
 }
 
 // getPlistPath returns the LaunchAgent plist path used for autostart.
@@ -41,7 +41,7 @@ func getLogPaths() (stdout, stderr string) {
 		log.Fatalf("cannot determine home directory: %v", err)
 	}
 	dir := filepath.Join(home, "Library", "Logs")
-	return filepath.Join(dir, "tismonitor.log"), filepath.Join(dir, "tismonitor.err")
+	return filepath.Join(dir, "tis-monitor.log"), filepath.Join(dir, "tis-monitor.err")
 }
 
 // launchAgentConfig holds the values substituted into the generated LaunchAgent plist.
@@ -97,7 +97,7 @@ func copyFile(src, dst string) error {
 // - copies the current binary into installDir()
 // - ad-hoc signs it
 // - writes the LaunchAgent plist
-// - loads it via launchctl so tismonitor autostarts at login and starts running immediately
+// - loads it via launchctl so tis-monitor autostarts at login and starts running immediately
 func install() {
 	self, err := os.Executable()
 	if err != nil {
@@ -171,5 +171,5 @@ func uninstall() {
 	}
 
 	fmt.Println("Uninstalled: LaunchAgent removed and installed binary deleted.")
-	fmt.Println("Log files under ~/Library/Logs/tismonitor.* were left in place; remove manually if you want.")
+	fmt.Println("Log files under ~/Library/Logs/tis-monitor.* were left in place; remove manually if you want.")
 }
