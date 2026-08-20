@@ -102,3 +102,7 @@ A "Mach service" is just a named port that something has registered, so other pr
 That's exactly TextInputSwitcher's setup — its plist reserves `com.apple.inputswitcher.running/.startup/.stop`, with no `RunAtLoad`. So it can exit quietly under memory pressure, and launchd is still sitting there holding those three names, ready to relaunch it whenever something asks for one of them.
 
 Why this matters for the "don't just exec the binary yourself": if you manually relaunch the raw binary, that copy never tells launchd "I'm here" for those service names - launchd still thinks they're unclaimed. So if something later does a genuine lookup, launchd might start its own copy too, and now you have two processes for one job. `launchctl kickstart` avoids that because it works through launchd, which is the only thing that actually owns that registration.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
