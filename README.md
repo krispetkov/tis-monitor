@@ -42,6 +42,18 @@ its own owning user. `launchctl kickstart` is the one lever a regular account ha
 go build -o tismonitor .
 ```
 
+Or download the latest prebuilt binary from the [Releases](../../releases) page (Apple Silicon only).
+
+Since the binary isn't signed/notarized, macOS Gatekeeper will block it on first run
+("cannot be opened because it is from an unidentified developer"). To allow it:
+
+```bash
+xattr -d com.apple.quarantine tismonitor
+```
+
+or right-click (Control-click) the binary in Finder → Open → Open, and confirm the
+prompt.
+
 ## Usage
 
 ```bash
